@@ -188,9 +188,9 @@ class HelpController extends BaseAPI
     //crudContent
     public function crudContent(){
         $postData = parent::getPostData();
-        $app_name = parent::sanitizeInput($postData->articleId);
-        $sign_up_url = parent::sanitizeInput($postData->articleComponentOrder);
-        $support_email = parent::sanitizeInput($postData->articleComponentType);
+        $article_id = parent::sanitizeInput($postData->articleId);
+        $article_component_order = parent::sanitizeInput($postData->articleComponentOrder);
+        $article_component_type = parent::sanitizeInput($postData->articleComponentType);
         $article_component_content = parent::sanitizeInput($postData->articleComponentContent);
         $operation_type = parent::sanitizeInput($postData->operationType);
         
@@ -205,10 +205,10 @@ class HelpController extends BaseAPI
         }
 
         $passedData = array(
-            "app_name"=> $app_name,
-            "sign_up_url" => $sign_up_url,
+            "article_id"=> $article_id,
+            "article_component_order" => $article_component_order,
             "article_component_id" => $article_component_id,
-            "support_email" => $support_email,
+            "article_component_type" => $article_component_type,
             "article_component_content" => $article_component_content,
             "operation_type" => $operation_type
         );

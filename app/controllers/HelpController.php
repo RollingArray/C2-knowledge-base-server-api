@@ -185,7 +185,7 @@ class HelpController extends BaseAPI
         
     }
 
-    
+    //crudContent
     public function crudContent(){
         $postData = parent::getPostData();
         $app_name = parent::sanitizeInput($postData->articleId);

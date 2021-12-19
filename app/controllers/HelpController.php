@@ -212,7 +212,7 @@ class HelpController extends BaseAPI
             "article_component_content" => $article_component_content,
             "operation_type" => $operation_type
         );
-
+        
         //create
         if($operation_type == 'create')
         {

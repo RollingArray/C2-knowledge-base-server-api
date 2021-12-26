@@ -97,12 +97,12 @@ class HelpController extends BaseAPI
 
     public function crudArticle(){
         $postData = parent::getPostData();
-        $app_name = parent::sanitizeInput($postData->articleId);
+        $article_id = parent::sanitizeInput($postData->articleId);
         $article_title = parent::sanitizeInput($postData->articleTitle);
         $operation_type = parent::sanitizeInput($postData->operationType);
         
         $passedData = array(
-            "app_name"=>$app_name,
+            "article_id"=>$article_id,
             "article_title"=>$article_title,
             "operation_type"=>$operation_type
         );
@@ -144,6 +144,19 @@ class HelpController extends BaseAPI
         {
             $child_menu_order = parent::sanitizeInput($postData->childMenuOrder);
         }
+
+        $article_sub_child_id = '';
+        if(property_exists($postData, 'articleSubChildId'))
+        {
+            $article_sub_child_id = parent::sanitizeInput($postData->articleSubChildId);
+        
+        }
+
+        $sub_child_menu_order = 0;
+        if(property_exists($postData, 'subChildMenuOrder'))
+        {
+            $sub_child_menu_order = parent::sanitizeInput($postData->subChildMenuOrder);
+        }
         
 
         $passedData = array(
@@ -151,6 +164,8 @@ class HelpController extends BaseAPI
             "parent_menu_order"=>$parent_menu_order,
             "article_child_id"=>$article_child_id,
             "child_menu_order"=>$child_menu_order,
+            "article_sub_child_id"=>$article_sub_child_id,
+            "sub_child_menu_order"=>$sub_child_menu_order,
             "operation_type"=>$operation_type
         );
 
@@ -161,25 +176,35 @@ class HelpController extends BaseAPI
         }
 
         //edit
-        else if($operation_type == 'edit')
+        else if($operation_type == 'edit-parent')
         {
-            if($passedData['article_child_id'] == ''){
-                $this->DBAccessLib->editParentMenu($passedData);   
-            }
-            else{
-                $this->DBAccessLib->editChildMenu($passedData);
-            }
+            $this->DBAccessLib->editParentMenu($passedData); 
+        }
+
+        else if($operation_type == 'edit-child')
+        {
+            $this->DBAccessLib->editChildMenu($passedData);
+        }
+
+        else if($operation_type == 'edit-sub-child')
+        {
+            $this->DBAccessLib->editSubChildMenu($passedData);
         }
 
         //delete
-        else if($operation_type == 'delete')
+        else if($operation_type == 'delete-parent')
         {
-            if($passedData['article_child_id'] == ''){
-                $this->DBAccessLib->deleteParentMenu($passedData);   
-            }
-            else{
-                $this->DBAccessLib->deleteChildMenu($passedData);
-            }
+            $this->DBAccessLib->deleteParentMenu($passedData);   
+        }
+
+        else if($operation_type == 'delete-child')
+        {
+            $this->DBAccessLib->deleteChildMenu($passedData);
+        }
+
+        else if($operation_type == 'delete-sub-child')
+        {
+            $this->DBAccessLib->deleteSubChildMenu($passedData);
         }
         //echo json_encode($passedData);
         
@@ -212,7 +237,7 @@ class HelpController extends BaseAPI
             "article_component_content" => $article_component_content,
             "operation_type" => $operation_type
         );
-        
+
         //create
         if($operation_type == 'create')
         {

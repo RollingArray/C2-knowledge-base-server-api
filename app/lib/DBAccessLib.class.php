@@ -38,6 +38,18 @@ class DBAccessLib extends BaseDatabaseAPI
         return parent::getAllRecords($query, $data);
     }
 
+    //getChildMenu
+    public function getSubChildMenu($passedData)
+    {
+        $query = "CALL sp_get_sub_child_menu(?)";
+
+        $data = array(
+            $passedData['article_child_id'],
+        );
+
+        return parent::getAllRecords($query, $data);
+    }
+
     //getArticleDetails
     public function getArticleDetails($passedData)
     {
@@ -112,14 +124,18 @@ class DBAccessLib extends BaseDatabaseAPI
 
     function insertMenu($passedData)
     {
-        $query = "CALL sp_insert_menu(?,?,?,?)";
+        $query = "CALL sp_insert_menu(?,?,?,?,?,?)";
 
         $data = array(
             $passedData['article_parent_id'],
             $passedData['article_child_id'],
+            $passedData['article_sub_child_id'],
             $passedData['parent_menu_order'],
-            $passedData['child_menu_order']
+            $passedData['child_menu_order'],
+            $passedData['sub_child_menu_order'],
         );
+
+        echo json_encode($data);
 
         return parent::executeStatement($query, $data);
     }
@@ -150,6 +166,26 @@ class DBAccessLib extends BaseDatabaseAPI
         return parent::executeStatement($query, $data);
     }
 
+    function editSubChildMenu($passedData)
+    {
+        $query = "CALL sp_update_sub_child_menu(?,?,?,?,?,?)";
+
+        $data = array(
+            $passedData['article_parent_id'],
+            $passedData['article_child_id'],
+            $passedData['article_sub_child_id'],
+            $passedData['parent_menu_order'],
+            $passedData['child_menu_order'],
+            $passedData['sub_child_menu_order'],
+        );
+
+        echo json_encode($data);
+
+        return parent::executeStatement($query, $data);
+    }
+
+    
+
     function deleteParentMenu($passedData)
     {
         $query = "CALL sp_delete_parent_menu(?)";
@@ -171,6 +207,20 @@ class DBAccessLib extends BaseDatabaseAPI
 
         return parent::executeStatement($query, $data);
     }
+
+    function deleteSubChildMenu($passedData)
+    {
+        $query = "CALL sp_delete_sub_child_menu(?)";
+
+        $data = array(
+            $passedData['article_sub_child_id']
+        );
+
+        echo json_encode($data);
+        return parent::executeStatement($query, $data);
+    }
+
+    
 
     function insertContent($passedData)
     {

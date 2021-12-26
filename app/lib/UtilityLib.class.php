@@ -139,6 +139,21 @@ class UtilityLib
         $rows = $DBAccessLib->getChildMenu($passedData);
         $tempRows = array();
         foreach ($rows as $eachData) {
+            $passedData = array(
+                "article_child_id"=>$eachData['articleId'],
+            );
+            $eachData['subChildMenu'] = $this->getSubChildMenu($DBAccessLib, $passedData);
+            $tempRows[] = $this->generateKeyValueStructure($eachData);
+        }
+
+        return $this->generateServiceReturnDataStructure($tempRows);
+    } 
+
+    public function getSubChildMenu($DBAccessLib, $passedData)
+    {
+        $rows = $DBAccessLib->getSubChildMenu($passedData);
+        $tempRows = array();
+        foreach ($rows as $eachData) {
             $tempRows[] = $this->generateKeyValueStructure($eachData);
         }
 
